@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaderboard</title>
+<style>
+:root{--bg:#0b0b0c;--card:#151516;--card2:#1d1d1f;--line:#2a2a2d;--ink:#fff;--soft:#a8a8ae;--red:#e11d2e;--paper:#fff;--paperink:#0b0b0c;--sys:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.stage{min-height:100vh;display:flex;justify-content:center;padding:14px 10px;}
+.app{width:100%;max-width:380px;background:var(--bg);border-radius:18px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.5);}
+.bar{display:flex;align-items:center;gap:10px;padding:13px 14px;background:#000;border-bottom:3px solid var(--red);}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none;}
+.bar .t{flex:1;min-width:0;}
+.bar .t b{display:block;font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar .t span{display:block;font-size:11px;color:var(--soft);margin-top:1px;}
+.tag{flex:none;background:var(--paper);color:var(--paperink);font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:5px 9px;border-radius:999px;}
+.body{padding:12px;}
+.paper{background:var(--paper);color:var(--paperink);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.dark{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:9px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;}
+.kv small{display:block;font-size:10px;color:#6b6b72;}
+.kv b{display:block;font-size:12.5px;font-weight:700;margin-top:1px;word-break:break-word;}
+.dark .kv small{color:var(--soft);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.stat{background:var(--red);border-radius:12px;padding:11px 4px;text-align:center;}
+.stat b{display:block;font-size:17px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;}
+.stat span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;opacity:.9;margin-top:2px;}
+.track{height:9px;background:#2a2a2d;border-radius:99px;overflow:hidden;}
+.paper .track{background:#e6e6ea;}
+.fill{height:100%;background:var(--red);border-radius:99px;}
+.foot{text-align:center;font-size:10.5px;color:var(--soft);margin-top:4px;}
+.hide{display:none!important;}
+.scroll{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:3px;scrollbar-width:thin;scrollbar-color:var(--red) transparent;}
+.scroll::-webkit-scrollbar{width:4px;}
+.scroll::-webkit-scrollbar-thumb{background:var(--red);border-radius:4px;}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:0 1px 10px;scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex:none;cursor:pointer;font-family:var(--sys);color:var(--soft);font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff;}
+
+.scroll{height:360px;}
+.row{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 11px;margin-bottom:7px;}
+.row.me{border-color:var(--red);background:#1e1012;}
+.rk{flex:none;width:26px;height:26px;border-radius:8px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;}
+.row:nth-child(1) .rk{background:var(--red);}
+.row:nth-child(2) .rk{background:var(--paper);color:var(--paperink);}
+.row:nth-child(3) .rk{background:#7a1019;}
+.nm{flex:1;min-width:0;}
+.nm b{display:block;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nm small{display:block;font-size:10px;color:var(--soft);margin-top:1px;}
+.vl{flex:none;font-size:12px;font-weight:800;color:#fff;background:var(--red);padding:4px 9px;border-radius:99px;}
+.empty{text-align:center;color:var(--soft);font-size:12px;padding:30px 0;}
+.mine{margin-top:10px;background:var(--paper);color:var(--paperink);border-radius:12px;padding:10px 12px;font-size:12px;display:flex;justify-content:space-between;}
+.mine b{font-weight:800;}
+
+</style>
+</head>
+<body>
+<div class="stage"><div class="app">
+<div class="bar"><div class="logo" id="logo">K</div><div class="t"><b id="bot">Bot</b><span id="sub"></span></div><div class="tag">Top</div></div>
+<div class="body">
+  <div class="stats" style="grid-template-columns:1fr 1fr">
+    <div class="stat"><b id="sTot">0</b><span>Total command</span></div>
+    <div class="stat"><b id="sDay">0</b><span>Hari ini</span></div>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="scroll" id="list"></div>
+  <div class="mine" id="mine"></div>
+</div>
+</div></div>
+<script>
+/* Data diisi otomatis oleh plugin lewat penanda DATA_START / DATA_END. Isi di bawah hanya contoh. */
+const DATA = /*DATA_START*/{
+  "bot": "Kaguya MD",
+  "prefix": ".",
+  "total": 5120,
+  "today": 212,
+  "tabs": [
+    {
+      "id": "level",
+      "name": "Level",
+      "emoji": "⭐",
+      "rows": [
+        {
+          "rank": 1,
+          "name": "Yann",
+          "value": "Lv 30",
+          "sub": "9000 EXP",
+          "me": false
+        },
+        {
+          "rank": 2,
+          "name": "Rina",
+          "value": "Lv 27",
+          "sub": "8200 EXP",
+          "me": false
+        },
+        {
+          "rank": 3,
+          "name": "Dimas",
+          "value": "Lv 24",
+          "sub": "7400 EXP",
+          "me": false
+        },
+        {
+          "rank": 4,
+          "name": "vzn",
+          "value": "Lv 21",
+          "sub": "6600 EXP",
+          "me": true
+        },
+        {
+          "rank": 5,
+          "name": "Putra",
+          "value": "Lv 18",
+          "sub": "5800 EXP",
+          "me": false
+        },
+        {
+          "rank": 6,
+          "name": "Salsa",
+          "value": "Lv 15",
+          "sub": "5000 EXP",
+          "me": false
+        }
+      ],
+      "me": {
+        "rank": 4,
+        "value": "Lv 21"
+      }
+    },
+    {
+      "id": "saldo",
+      "name": "Saldo",
+      "emoji": "💰",
+      "rows": [
+        {
+          "rank": 1,
+          "name": "Rina",
+          "value": "Rp 13.500.000",
+          "sub": "",
+          "me": false
+        },
+        {
+          "rank": 2,
+          "name": "Yann",
+          "value": "Rp 12.000.000",
+          "sub": "",
+          "me": false
+        },
+        {
+          "rank": 3,
+          "name": "Dimas",
+          "value": "Rp 10.500.000",
+          "sub": "",
+          "me": false
+        }
+      ],
+      "me": null
+    },
+    {
+      "id": "cmd",
+      "name": "Aktif",
+      "emoji": "⚡",
+      "rows": [],
+      "me": null
+    },
+    {
+      "id": "populer",
+      "name": "Populer",
+      "emoji": "🔥",
+      "rows": [
+        {
+          "rank": 1,
+          "name": ".menu",
+          "value": "900x",
+          "sub": "",
+          "me": false
+        },
+        {
+          "rank": 2,
+          "name": ".sticker",
+          "value": "640x",
+          "sub": "",
+          "me": false
+        }
+      ],
+      "me": null
+    }
+  ]
+}/*DATA_END*/;
+
+const $ = s => document.querySelector(s);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const kv = (k, v) => { const b = el('div', 'kv'); b.appendChild(el('small', null, k)); b.appendChild(el('b', null, String(v))); return b; };
+
+$('#bot').textContent = DATA.bot || 'Bot'; $('#logo').textContent = String(DATA.bot || 'B').trim().charAt(0).toUpperCase();
+
+$('#sub').textContent = 'Papan peringkat';
+const tabs = Array.isArray(DATA.tabs) ? DATA.tabs : [];
+$('#sTot').textContent = (DATA.total || 0).toLocaleString('id-ID');
+$('#sDay').textContent = (DATA.today || 0).toLocaleString('id-ID');
+function show(i) {
+  const t = tabs[i]; if (!t) return;
+  document.querySelectorAll('.chip').forEach((c, n) => c.classList.toggle('on', n === i));
+  const list = $('#list'); list.textContent = ''; list.scrollTop = 0;
+  if (!t.rows.length) list.appendChild(el('div', 'empty', 'Belum ada data.'));
+  t.rows.forEach(r => {
+    const row = el('div', 'row' + (r.me ? ' me' : ''));
+    row.appendChild(el('div', 'rk', r.rank));
+    const nm = el('div', 'nm'); nm.appendChild(el('b', null, r.name)); if (r.sub) nm.appendChild(el('small', null, r.sub));
+    row.appendChild(nm); row.appendChild(el('div', 'vl', r.value)); list.appendChild(row);
+  });
+  const mine = $('#mine'); mine.textContent = '';
+  if (t.me) { mine.appendChild(el('span', null, 'Posisimu')); mine.appendChild(el('b', null, '#' + t.me.rank + ' · ' + t.me.value)); mine.classList.remove('hide'); }
+  else mine.classList.add('hide');
+}
+tabs.forEach((t, i) => { const c = el('button', 'chip', t.emoji + ' ' + t.name); c.addEventListener('click', () => show(i)); $('#chips').appendChild(c); });
+show(0);
+
+</script>
+</body>
+</html>

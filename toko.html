@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Katalog Toko</title>
+<style>
+:root{--bg:#0b0b0c;--card:#151516;--card2:#1d1d1f;--line:#2a2a2d;--ink:#fff;--soft:#a8a8ae;--red:#e11d2e;--paper:#fff;--paperink:#0b0b0c;--sys:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.stage{min-height:100vh;display:flex;justify-content:center;padding:14px 10px;}
+.app{width:100%;max-width:380px;background:var(--bg);border-radius:18px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.5);}
+.bar{display:flex;align-items:center;gap:10px;padding:13px 14px;background:#000;border-bottom:3px solid var(--red);}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none;}
+.bar .t{flex:1;min-width:0;}
+.bar .t b{display:block;font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar .t span{display:block;font-size:11px;color:var(--soft);margin-top:1px;}
+.tag{flex:none;background:var(--paper);color:var(--paperink);font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:5px 9px;border-radius:999px;}
+.body{padding:12px;}
+.paper{background:var(--paper);color:var(--paperink);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.dark{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:9px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;}
+.kv small{display:block;font-size:10px;color:#6b6b72;}
+.kv b{display:block;font-size:12.5px;font-weight:700;margin-top:1px;word-break:break-word;}
+.dark .kv small{color:var(--soft);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.stat{background:var(--red);border-radius:12px;padding:11px 4px;text-align:center;}
+.stat b{display:block;font-size:17px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;}
+.stat span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;opacity:.9;margin-top:2px;}
+.track{height:9px;background:#2a2a2d;border-radius:99px;overflow:hidden;}
+.paper .track{background:#e6e6ea;}
+.fill{height:100%;background:var(--red);border-radius:99px;}
+.foot{text-align:center;font-size:10.5px;color:var(--soft);margin-top:4px;}
+.hide{display:none!important;}
+.scroll{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:3px;scrollbar-width:thin;scrollbar-color:var(--red) transparent;}
+.scroll::-webkit-scrollbar{width:4px;}
+.scroll::-webkit-scrollbar-thumb{background:var(--red);border-radius:4px;}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:0 1px 10px;scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex:none;cursor:pointer;font-family:var(--sys);color:var(--soft);font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff;}
+
+.scroll{height:430px;}
+.cd{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:11px 12px;margin-bottom:8px;}
+.cd.out{opacity:.55;}
+.ch{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
+.ch b{font-size:13.5px;font-weight:750;line-height:1.25;}
+.pr{flex:none;font-size:13px;font-weight:800;color:#fff;background:var(--red);padding:4px 9px;border-radius:99px;white-space:nowrap;}
+.cd p{font-size:11.5px;color:#c9c9ce;line-height:1.4;margin-top:6px;}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.mt{font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;background:var(--card2);color:#d6d6da;}
+.mt.s{background:var(--paper);color:var(--paperink);}
+.mt.x{background:#2a2a2d;color:#fff;}
+.code{margin-top:9px;font-family:var(--mono);font-size:11.5px;background:#000;border:1px dashed #5a1118;border-radius:9px;padding:8px 10px;color:#fff;cursor:pointer;}
+.code.hit{background:var(--red);}
+.cdesc{font-size:11px;color:var(--soft);margin:0 2px 10px;}
+
+</style>
+</head>
+<body>
+<div class="stage"><div class="app">
+<div class="bar"><div class="logo" id="logo">K</div><div class="t"><b id="bot">Bot</b><span id="sub"></span></div><div class="tag">Toko</div></div>
+<div class="body">
+  <div class="stats" style="grid-template-columns:1fr 1fr">
+    <div class="stat"><b id="sTot">0</b><span>Produk</span></div>
+    <div class="stat"><b id="sCat">0</b><span>Kategori</span></div>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="cdesc" id="cdesc"></div>
+  <div class="scroll" id="list"></div>
+  <div class="foot" id="foot"></div>
+</div>
+</div></div>
+<script>
+/* Data diisi otomatis oleh plugin lewat penanda DATA_START / DATA_END. Isi di bawah hanya contoh. */
+const DATA = /*DATA_START*/{
+  "bot": "Kaguya MD",
+  "prefix": ".",
+  "shop": "Kaguya Store",
+  "owner": "YannRzy",
+  "total": 13,
+  "categories": [
+    {
+      "key": "script",
+      "emoji": "🍓",
+      "name": "Script Bot",
+      "desc": "Script bot WhatsApp siap pakai",
+      "items": [
+        {
+          "code": "sc-selfbot",
+          "name": "Script Selfbot WhatsApp",
+          "price": "Rp 75.000",
+          "desc": "Script selfbot ringan untuk akun pribadi.",
+          "stock": "ready",
+          "soldOut": false,
+          "delivery": "Otomatis (langsung dikirim)"
+        },
+        {
+          "code": "sc-kaguya",
+          "name": "Script Bot Kaguya MD",
+          "price": "Rp 150.000",
+          "desc": "Script bot WhatsApp multi device, fitur lengkap.",
+          "stock": "ready",
+          "soldOut": false,
+          "delivery": "Otomatis (langsung dikirim)"
+        }
+      ]
+    },
+    {
+      "key": "panel",
+      "emoji": "🍰",
+      "name": "Panel & Hosting",
+      "desc": "Panel untuk menjalankan bot 24 jam",
+      "items": [
+        {
+          "code": "panel-1gb",
+          "name": "Panel Bot 1GB",
+          "price": "Rp 10.000",
+          "desc": "RAM 1GB, 30 hari.",
+          "stock": "ready",
+          "soldOut": false,
+          "delivery": "Diproses owner"
+        }
+      ]
+    },
+    {
+      "key": "akun",
+      "emoji": "🧃",
+      "name": "Akun & Aplikasi",
+      "desc": "Akun premium",
+      "items": [
+        {
+          "code": "akun-prem",
+          "name": "Akun Premium",
+          "price": "Rp 20.000",
+          "desc": "Stok dikirim otomatis begitu lunas.",
+          "stock": "habis",
+          "soldOut": true,
+          "delivery": "Otomatis (dari stok)"
+        }
+      ]
+    }
+  ]
+}/*DATA_END*/;
+
+const $ = s => document.querySelector(s);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const kv = (k, v) => { const b = el('div', 'kv'); b.appendChild(el('small', null, k)); b.appendChild(el('b', null, String(v))); return b; };
+
+$('#bot').textContent = DATA.bot || 'Bot'; $('#logo').textContent = String(DATA.bot || 'B').trim().charAt(0).toUpperCase();
+
+$('#sub').textContent = DATA.shop || 'Katalog toko';
+const cats = Array.isArray(DATA.categories) ? DATA.categories : [];
+const P = DATA.prefix || '.';
+$('#sTot').textContent = DATA.total || 0; $('#sCat').textContent = cats.length;
+function show(i) {
+  const c = cats[i]; if (!c) return;
+  document.querySelectorAll('.chip').forEach((x, n) => x.classList.toggle('on', n === i));
+  $('#cdesc').textContent = c.desc || '';
+  const list = $('#list'); list.textContent = ''; list.scrollTop = 0;
+  c.items.forEach(it => {
+    const d = el('div', 'cd' + (it.soldOut ? ' out' : ''));
+    const h = el('div', 'ch'); h.appendChild(el('b', null, it.name)); h.appendChild(el('div', 'pr', it.price)); d.appendChild(h);
+    if (it.desc) d.appendChild(el('p', null, it.desc));
+    const m = el('div', 'meta');
+    m.appendChild(el('span', 'mt ' + (it.soldOut ? 'x' : 's'), it.soldOut ? 'Stok habis' : (it.stock === 'ready' ? 'Ready' : 'Stok ' + it.stock)));
+    m.appendChild(el('span', 'mt', it.delivery)); d.appendChild(m);
+    const text = P + 'order ' + it.code;
+    const code = el('div', 'code', text);
+    code.addEventListener('click', () => { code.classList.add('hit'); setTimeout(() => code.classList.remove('hit'), 220); try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text); } catch (e) {} });
+    if (!it.soldOut) d.appendChild(code);
+    list.appendChild(d);
+  });
+}
+cats.forEach((c, i) => { const b = el('button', 'chip', c.emoji + ' ' + c.name); b.addEventListener('click', () => show(i)); $('#chips').appendChild(b); });
+$('#foot').textContent = 'Ketuk kode untuk menyalin, lalu kirim ke chat bot' + (DATA.owner ? ' · Owner: ' + DATA.owner : '');
+show(0);
+
+</script>
+</body>
+</html>

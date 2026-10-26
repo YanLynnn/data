@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Group Info</title>
+<style>
+:root{--bg:#0b0b0c;--card:#151516;--card2:#1d1d1f;--line:#2a2a2d;--ink:#fff;--soft:#a8a8ae;--red:#e11d2e;--paper:#fff;--paperink:#0b0b0c;--sys:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.stage{min-height:100vh;display:flex;justify-content:center;padding:14px 10px;}
+.app{width:100%;max-width:380px;background:var(--bg);border-radius:18px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.5);}
+.bar{display:flex;align-items:center;gap:10px;padding:13px 14px;background:#000;border-bottom:3px solid var(--red);}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none;}
+.bar .t{flex:1;min-width:0;}
+.bar .t b{display:block;font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar .t span{display:block;font-size:11px;color:var(--soft);margin-top:1px;}
+.tag{flex:none;background:var(--paper);color:var(--paperink);font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:5px 9px;border-radius:999px;}
+.body{padding:12px;}
+.paper{background:var(--paper);color:var(--paperink);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.dark{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:9px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;}
+.kv small{display:block;font-size:10px;color:#6b6b72;}
+.kv b{display:block;font-size:12.5px;font-weight:700;margin-top:1px;word-break:break-word;}
+.dark .kv small{color:var(--soft);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.stat{background:var(--red);border-radius:12px;padding:11px 4px;text-align:center;}
+.stat b{display:block;font-size:17px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;}
+.stat span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;opacity:.9;margin-top:2px;}
+.track{height:9px;background:#2a2a2d;border-radius:99px;overflow:hidden;}
+.paper .track{background:#e6e6ea;}
+.fill{height:100%;background:var(--red);border-radius:99px;}
+.foot{text-align:center;font-size:10.5px;color:var(--soft);margin-top:4px;}
+.hide{display:none!important;}
+.scroll{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:3px;scrollbar-width:thin;scrollbar-color:var(--red) transparent;}
+.scroll::-webkit-scrollbar{width:4px;}
+.scroll::-webkit-scrollbar-thumb{background:var(--red);border-radius:4px;}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:0 1px 10px;scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex:none;cursor:pointer;font-family:var(--sys);color:var(--soft);font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff;}
+
+.who{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.av{width:60px;height:60px;border-radius:16px;flex:none;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;overflow:hidden;}
+.av img{width:100%;height:100%;object-fit:cover;display:block;}
+.who h1{font-size:17px;font-weight:800;line-height:1.2;}
+.who p{font-size:11px;color:var(--soft);margin-top:3px;word-break:break-all;}
+.dsc{font-size:12px;color:#d6d6da;line-height:1.45;margin-bottom:10px;}
+.gr{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px;}
+.gr:last-child{border-bottom:0;}
+.sw{font-size:10px;font-weight:800;letter-spacing:.6px;padding:3px 9px;border-radius:99px;background:var(--card2);color:var(--soft);}
+.sw.on{background:var(--red);color:#fff;}
+.sw i{font-style:normal;font-weight:600;opacity:.85;}
+.rent{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;}
+.rent h3{font-size:14px;font-weight:800;}
+.rent p{font-size:11px;color:#6b6b72;margin-top:2px;}
+.big{flex:none;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:6px 11px;border-radius:99px;background:var(--red);color:#fff;}
+.big.off{background:#2a2a2d;color:#fff;}
+
+</style>
+</head>
+<body>
+<div class="stage"><div class="app">
+<div class="bar"><div class="logo" id="logo">K</div><div class="t"><b id="bot">Bot</b><span id="sub"></span></div><div class="tag">Grup</div></div>
+<div class="body">
+  <div class="who">
+    <div class="av" id="av"></div>
+    <div style="min-width:0;flex:1"><h1 id="name">-</h1><p id="gid"></p></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="sMem">0</b><span>Member</span></div>
+    <div class="stat"><b id="sAdm">0</b><span>Admin</span></div>
+    <div class="stat"><b id="sMut">0</b><span>Dibisukan</span></div>
+  </div>
+  <div class="dsc" id="dsc"></div>
+  <div class="dark"><div class="label">Penjaga Grup</div><div id="guards"></div></div>
+  <div class="paper"><div class="label">Sewa Bot</div><div class="rent" id="rent"></div><div class="grid" id="rentInfo"></div></div>
+  <div class="paper"><div class="label">Info</div><div class="grid" id="info"></div></div>
+  <div class="foot" id="foot"></div>
+</div>
+</div></div>
+<script>
+/* Data diisi otomatis oleh plugin lewat penanda DATA_START / DATA_END. Isi di bawah hanya contoh. */
+const DATA = /*DATA_START*/{
+  "bot": "Kaguya MD",
+  "name": "Tanggerang Squad",
+  "avatar": "",
+  "members": 128,
+  "admins": 6,
+  "created": "12 Mar 2024 10.00",
+  "desc": "Grup santai, dilarang spam dan kirim link sembarangan.",
+  "id": "120363321527101636",
+  "guards": [
+    {
+      "label": "Anti Link",
+      "on": true,
+      "note": "kick"
+    },
+    {
+      "label": "Anti Toxic",
+      "on": true,
+      "note": ""
+    },
+    {
+      "label": "Anti Spam",
+      "on": false,
+      "note": ""
+    },
+    {
+      "label": "Auto Reply",
+      "on": false,
+      "note": ""
+    },
+    {
+      "label": "Anti Sticker",
+      "on": false,
+      "note": ""
+    },
+    {
+      "label": "Anti SW Grup",
+      "on": false,
+      "note": ""
+    },
+    {
+      "label": "Anti Tag SW",
+      "on": false,
+      "note": ""
+    },
+    {
+      "label": "Anti Sekali Lihat",
+      "on": true,
+      "note": ""
+    }
+  ],
+  "warnLimit": 3,
+  "muted": 2,
+  "banned": false,
+  "sewaMode": true,
+  "rental": {
+    "active": true,
+    "plan": "30 hari",
+    "left": "21 hari 4 jam",
+    "until": "16 Nov 2026 20.00"
+  }
+}/*DATA_END*/;
+
+const $ = s => document.querySelector(s);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const kv = (k, v) => { const b = el('div', 'kv'); b.appendChild(el('small', null, k)); b.appendChild(el('b', null, String(v))); return b; };
+
+$('#bot').textContent = DATA.bot || 'Bot'; $('#logo').textContent = String(DATA.bot || 'B').trim().charAt(0).toUpperCase();
+
+$('#sub').textContent = 'Info grup';
+const D = DATA;
+$('#name').textContent = D.name; $('#gid').textContent = D.id + '@g.us';
+const av = $('#av');
+if (D.avatar) { const i = el('img'); i.src = D.avatar; i.onerror = () => { av.textContent = String(D.name || '?').charAt(0).toUpperCase(); }; av.appendChild(i); }
+else av.textContent = String(D.name || '?').charAt(0).toUpperCase();
+$('#sMem').textContent = D.members; $('#sAdm').textContent = D.admins; $('#sMut').textContent = D.muted;
+if (D.desc) $('#dsc').textContent = D.desc; else $('#dsc').classList.add('hide');
+D.guards.forEach(g => {
+  const r = el('div', 'gr'); r.appendChild(el('span', null, g.label));
+  const s = el('span', 'sw' + (g.on ? ' on' : ''), g.on ? 'ON' : 'OFF');
+  if (g.on && g.note) { s.appendChild(document.createTextNode(' ')); s.appendChild(el('i', null, '· ' + g.note)); }
+  r.appendChild(s); $('#guards').appendChild(r);
+});
+const rent = $('#rent');
+if (D.rental) {
+  const l = el('div'); l.appendChild(el('h3', null, D.rental.active ? 'Sewa aktif' : 'Sewa habis')); l.appendChild(el('p', null, 'Paket ' + D.rental.plan));
+  rent.appendChild(l); rent.appendChild(el('div', 'big' + (D.rental.active ? '' : ' off'), D.rental.left));
+  $('#rentInfo').appendChild(kv('Berakhir', D.rental.until));
+} else {
+  const l = el('div'); l.appendChild(el('h3', null, D.sewaMode ? 'Belum menyewa' : 'Mode sewa nonaktif')); l.appendChild(el('p', null, D.sewaMode ? 'Bot tidak melayani grup ini' : 'Semua grup boleh memakai bot'));
+  rent.appendChild(l);
+}
+[['Dibuat', D.created], ['Batas warn', D.warnLimit + 'x'], ['Status chat', D.banned ? 'Di-ban' : 'Normal']].forEach(([k, v]) => $('#info').appendChild(kv(k, v)));
+$('#foot').textContent = (D.bot || 'Bot') + ' · setelan saat kartu dikirim';
+
+</script>
+</body>
+</html>

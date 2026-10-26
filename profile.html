@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profil Card</title>
+<style>
+:root{--bg:#0b0b0c;--card:#151516;--card2:#1d1d1f;--line:#2a2a2d;--ink:#fff;--soft:#a8a8ae;--red:#e11d2e;--paper:#fff;--paperink:#0b0b0c;--sys:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.stage{min-height:100vh;display:flex;justify-content:center;padding:14px 10px;}
+.app{width:100%;max-width:380px;background:var(--bg);border-radius:18px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.5);}
+.bar{display:flex;align-items:center;gap:10px;padding:13px 14px;background:#000;border-bottom:3px solid var(--red);}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none;}
+.bar .t{flex:1;min-width:0;}
+.bar .t b{display:block;font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar .t span{display:block;font-size:11px;color:var(--soft);margin-top:1px;}
+.tag{flex:none;background:var(--paper);color:var(--paperink);font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:5px 9px;border-radius:999px;}
+.body{padding:12px;}
+.paper{background:var(--paper);color:var(--paperink);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.dark{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:9px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;}
+.kv small{display:block;font-size:10px;color:#6b6b72;}
+.kv b{display:block;font-size:12.5px;font-weight:700;margin-top:1px;word-break:break-word;}
+.dark .kv small{color:var(--soft);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.stat{background:var(--red);border-radius:12px;padding:11px 4px;text-align:center;}
+.stat b{display:block;font-size:17px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;}
+.stat span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;opacity:.9;margin-top:2px;}
+.track{height:9px;background:#2a2a2d;border-radius:99px;overflow:hidden;}
+.paper .track{background:#e6e6ea;}
+.fill{height:100%;background:var(--red);border-radius:99px;}
+.foot{text-align:center;font-size:10.5px;color:var(--soft);margin-top:4px;}
+.hide{display:none!important;}
+.scroll{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:3px;scrollbar-width:thin;scrollbar-color:var(--red) transparent;}
+.scroll::-webkit-scrollbar{width:4px;}
+.scroll::-webkit-scrollbar-thumb{background:var(--red);border-radius:4px;}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:0 1px 10px;scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex:none;cursor:pointer;font-family:var(--sys);color:var(--soft);font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff;}
+
+.who{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.av{width:64px;height:64px;border-radius:50%;flex:none;background:var(--red);border:3px solid var(--red);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;overflow:hidden;}
+.av img{width:100%;height:100%;object-fit:cover;display:block;}
+.who h1{font-size:18px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.who p{font-size:11.5px;color:var(--soft);margin-top:2px;}
+.pills{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
+.pill{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:var(--paper);color:var(--paperink);}
+.pill.r{background:var(--red);color:#fff;}
+.xp{display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px;}
+.xp b{font-weight:800;}
+.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.bd{background:var(--card2);border-radius:11px;padding:8px 2px;text-align:center;}
+.bd i{display:block;font-style:normal;font-size:20px;}
+.bd span{display:block;font-size:9px;margin-top:3px;color:#e9e9ec;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 3px;}
+.bd.off{opacity:.3;filter:grayscale(1);}
+
+</style>
+</head>
+<body>
+<div class="stage"><div class="app">
+<div class="bar"><div class="logo" id="logo">K</div><div class="t"><b id="bot">Bot</b><span id="sub"></span></div><div class="tag">Profil</div></div>
+<div class="body">
+  <div class="who">
+    <div class="av" id="av"></div>
+    <div style="min-width:0;flex:1">
+      <h1 id="name">-</h1><p id="num"></p>
+      <div class="pills" id="pills"></div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="sLv">0</b><span>Level</span></div>
+    <div class="stat"><b id="sExp">0</b><span>EXP</span></div>
+    <div class="stat"><b id="sLim">0</b><span>Limit</span></div>
+  </div>
+  <div class="paper">
+    <div class="label">Progres Level</div>
+    <div class="xp"><span id="xpL"></span><b id="xpR"></b></div>
+    <div class="track"><div class="fill" id="xpF" style="width:0%"></div></div>
+  </div>
+  <div class="dark"><div class="label">Dompet &amp; Status</div><div class="grid" id="wal"></div></div>
+  <div class="paper"><div class="label">Aktivitas</div><div class="grid" id="act"></div></div>
+  <div class="dark"><div class="label" id="bdL">Badge</div><div class="badges" id="bds"></div></div>
+  <div class="foot" id="foot"></div>
+</div>
+</div></div>
+<script>
+/* Data diisi otomatis oleh plugin lewat penanda DATA_START / DATA_END. Isi di bawah hanya contoh. */
+const DATA = /*DATA_START*/{
+  "bot": "Kaguya MD",
+  "name": "vzn",
+  "number": "3346484166687",
+  "avatar": "",
+  "access": "Free",
+  "rank": "Bronze",
+  "role": "Newbie",
+  "level": 3,
+  "exp": "1.240",
+  "expCur": "140",
+  "expNeed": "380",
+  "expPct": 37,
+  "limit": "18",
+  "money": "25.000",
+  "bank": "100.000",
+  "health": "100/100",
+  "registered": true,
+  "clan": "-",
+  "premium": {
+    "on": false,
+    "left": ""
+  },
+  "cmd": 84,
+  "streak": 3,
+  "days": 5,
+  "badgeGot": 2,
+  "badges": [
+    {
+      "e": "🌱",
+      "n": "Pemula",
+      "d": "Jalankan 10 command",
+      "got": true
+    },
+    {
+      "e": "⚡",
+      "n": "Aktif",
+      "d": "Jalankan 200 command",
+      "got": false
+    },
+    {
+      "e": "🔥",
+      "n": "Maniak Bot",
+      "d": "Jalankan 1.000 command",
+      "got": false
+    },
+    {
+      "e": "📆",
+      "n": "Rajin",
+      "d": "7 hari berturut-turut",
+      "got": true
+    }
+  ]
+}/*DATA_END*/;
+
+const $ = s => document.querySelector(s);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const kv = (k, v) => { const b = el('div', 'kv'); b.appendChild(el('small', null, k)); b.appendChild(el('b', null, String(v))); return b; };
+
+$('#bot').textContent = DATA.bot || 'Bot'; $('#logo').textContent = String(DATA.bot || 'B').trim().charAt(0).toUpperCase();
+
+$('#sub').textContent = 'Kartu profil';
+const D = DATA;
+$('#name').textContent = D.name || '-';
+$('#num').textContent = '+' + (D.number || '');
+const av = $('#av');
+if (D.avatar) { const i = el('img'); i.src = D.avatar; i.onerror = () => { av.textContent = String(D.name || '?').charAt(0).toUpperCase(); }; av.appendChild(i); }
+else av.textContent = String(D.name || '?').charAt(0).toUpperCase();
+const pills = $('#pills');
+pills.appendChild(el('span', 'pill r', D.rank)); pills.appendChild(el('span', 'pill', D.access)); pills.appendChild(el('span', 'pill', D.role));
+$('#sLv').textContent = D.level; $('#sExp').textContent = D.exp; $('#sLim').textContent = D.limit;
+$('#xpL').textContent = 'Menuju level ' + ((Number(D.level) || 0) + 1);
+$('#xpR').textContent = D.expCur + ' / ' + D.expNeed + ' (' + D.expPct + '%)';
+$('#xpF').style.width = Math.max(2, D.expPct) + '%';
+[['Saldo', 'Rp ' + D.money], ['Bank', 'Rp ' + D.bank], ['Health', D.health], ['Terdaftar', D.registered ? 'Ya' : 'Belum']].forEach(([k, v]) => $('#wal').appendChild(kv(k, v)));
+[['Command', D.cmd], ['Streak', D.streak + ' hari'], ['Hari aktif', D.days], ['Clan', D.clan], ['Premium', D.premium && D.premium.on ? D.premium.left : 'Tidak']].forEach(([k, v]) => $('#act').appendChild(kv(k, v)));
+$('#bdL').textContent = 'Badge ' + D.badgeGot + '/' + (D.badges || []).length;
+(D.badges || []).forEach(b => { const d = el('div', 'bd' + (b.got ? '' : ' off')); d.appendChild(el('i', null, b.e)); d.appendChild(el('span', null, b.n)); d.title = b.d; $('#bds').appendChild(d); });
+$('#foot').textContent = (D.bot || 'Bot') + ' · badge redup = belum terbuka';
+
+</script>
+</body>
+</html>

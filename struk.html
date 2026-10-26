@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Struk</title>
+<style>
+:root{--bg:#0b0b0c;--card:#151516;--card2:#1d1d1f;--line:#2a2a2d;--ink:#fff;--soft:#a8a8ae;--red:#e11d2e;--paper:#fff;--paperink:#0b0b0c;--sys:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.stage{min-height:100vh;display:flex;justify-content:center;padding:14px 10px;}
+.app{width:100%;max-width:380px;background:var(--bg);border-radius:18px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.5);}
+.bar{display:flex;align-items:center;gap:10px;padding:13px 14px;background:#000;border-bottom:3px solid var(--red);}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none;}
+.bar .t{flex:1;min-width:0;}
+.bar .t b{display:block;font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar .t span{display:block;font-size:11px;color:var(--soft);margin-top:1px;}
+.tag{flex:none;background:var(--paper);color:var(--paperink);font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:5px 9px;border-radius:999px;}
+.body{padding:12px;}
+.paper{background:var(--paper);color:var(--paperink);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.dark{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:9px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;}
+.kv small{display:block;font-size:10px;color:#6b6b72;}
+.kv b{display:block;font-size:12.5px;font-weight:700;margin-top:1px;word-break:break-word;}
+.dark .kv small{color:var(--soft);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.stat{background:var(--red);border-radius:12px;padding:11px 4px;text-align:center;}
+.stat b{display:block;font-size:17px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;}
+.stat span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;opacity:.9;margin-top:2px;}
+.track{height:9px;background:#2a2a2d;border-radius:99px;overflow:hidden;}
+.paper .track{background:#e6e6ea;}
+.fill{height:100%;background:var(--red);border-radius:99px;}
+.foot{text-align:center;font-size:10.5px;color:var(--soft);margin-top:4px;}
+.hide{display:none!important;}
+.scroll{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:3px;scrollbar-width:thin;scrollbar-color:var(--red) transparent;}
+.scroll::-webkit-scrollbar{width:4px;}
+.scroll::-webkit-scrollbar-thumb{background:var(--red);border-radius:4px;}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:0 1px 10px;scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex:none;cursor:pointer;font-family:var(--sys);color:var(--soft);font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff;}
+
+.rc{background:var(--paper);color:var(--paperink);border-radius:6px;padding:16px 15px 18px;position:relative;
+  -webkit-mask:radial-gradient(circle 6px at 6px 100%,#0000 98%,#000) 0 0/12px 100%;}
+.rc{-webkit-mask:none;}
+.rc h2{text-align:center;font-size:15px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;}
+.rc .ty{text-align:center;font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--red);margin-top:3px;}
+.sep{border:0;border-top:2px dashed #cfcfd4;margin:12px 0;}
+.meta2{display:flex;justify-content:space-between;font-size:11px;color:#55555c;margin-bottom:3px;}
+.meta2 b{color:var(--paperink);font-weight:800;}
+.ln{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:5px 0;}
+.ln span{color:#55555c;flex:none;}
+.ln b{font-weight:700;text-align:right;word-break:break-word;}
+.tot{display:flex;justify-content:space-between;align-items:baseline;}
+.tot span{font-size:11px;font-weight:800;letter-spacing:1px;}
+.tot b{font-size:21px;font-weight:800;color:var(--red);}
+.stampw{text-align:center;margin-top:11px;}
+.stamp{display:inline-block;transform:rotate(-4deg);border:3px solid var(--red);color:var(--red);font-size:13px;font-weight:800;letter-spacing:2px;padding:3px 12px;border-radius:6px;}
+.stamp.no{border-color:#0b0b0c;color:#0b0b0c;}
+.nt{text-align:center;font-size:11px;color:#55555c;line-height:1.45;}
+.bars{display:flex;justify-content:center;gap:2px;height:34px;margin-top:12px;}
+.bars i{display:block;background:#0b0b0c;width:2px;}
+
+</style>
+</head>
+<body>
+<div class="stage"><div class="app">
+<div class="bar"><div class="logo" id="logo">K</div><div class="t"><b id="bot">Bot</b><span id="sub"></span></div><div class="tag">Struk</div></div>
+<div class="body">
+  <div class="rc">
+    <h2 id="shop">Struk</h2>
+    <div class="ty" id="ty"></div>
+    <div class="stampw"><div class="stamp" id="stamp"></div></div>
+    <hr class="sep">
+    <div class="meta2"><span>No</span><b id="no"></b></div>
+    <div class="meta2"><span>Tanggal</span><b id="dt"></b></div>
+    <hr class="sep">
+    <div id="rows"></div>
+    <hr class="sep">
+    <div class="tot"><span>TOTAL</span><b id="tot"></b></div>
+    <hr class="sep">
+    <div class="nt" id="nt"></div>
+    <div class="bars" id="bars"></div>
+  </div>
+</div>
+</div></div>
+<script>
+/* Data diisi otomatis oleh plugin lewat penanda DATA_START / DATA_END. Isi di bawah hanya contoh. */
+const DATA = /*DATA_START*/{
+  "bot": "Kaguya MD",
+  "type": "ORDER TOKO",
+  "no": "INV-0012",
+  "date": "26 Okt 2026 11.30",
+  "status": "Selesai",
+  "paid": true,
+  "rows": [
+    [
+      "Produk",
+      "Script Bot Kaguya MD"
+    ],
+    [
+      "Kode",
+      "sc-kaguya"
+    ],
+    [
+      "Harga",
+      "Rp 150.000"
+    ],
+    [
+      "Kode unik",
+      "Rp 42"
+    ],
+    [
+      "Pembeli",
+      "@6281234567890"
+    ]
+  ],
+  "total": "Rp 150.042",
+  "note": "Terima kasih sudah berbelanja."
+}/*DATA_END*/;
+
+const $ = s => document.querySelector(s);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const kv = (k, v) => { const b = el('div', 'kv'); b.appendChild(el('small', null, k)); b.appendChild(el('b', null, String(v))); return b; };
+
+$('#bot').textContent = DATA.bot || 'Bot'; $('#logo').textContent = String(DATA.bot || 'B').trim().charAt(0).toUpperCase();
+
+$('#sub').textContent = 'Bukti transaksi';
+const D = DATA;
+$('#shop').textContent = D.bot || 'Struk'; $('#ty').textContent = 'STRUK ' + D.type;
+$('#no').textContent = D.no; $('#dt').textContent = D.date;
+const st = $('#stamp'); st.textContent = String(D.status).toUpperCase(); if (!D.paid) st.classList.add('no');
+(D.rows || []).forEach(([k, v]) => { const r = el('div', 'ln'); r.appendChild(el('span', null, k)); r.appendChild(el('b', null, v)); $('#rows').appendChild(r); });
+$('#tot').textContent = D.total; $('#nt').textContent = D.note || '';
+// hiasan barcode dari nomor struk
+let seed = 0; String(D.no).split('').forEach(c => { seed = (seed * 31 + c.charCodeAt(0)) % 9973; });
+for (let i = 0; i < 44; i++) { seed = (seed * 48271) % 2147483647; const b = el('i'); b.style.width = (1 + seed % 3) + 'px'; $('#bars').appendChild(b); }
+
+</script>
+</body>
+</html>

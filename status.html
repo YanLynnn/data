@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Server Status</title>
+<style>
+:root{--bg:#0b0b0c;--card:#151516;--card2:#1d1d1f;--line:#2a2a2d;--ink:#fff;--soft:#a8a8ae;--red:#e11d2e;--paper:#fff;--paperink:#0b0b0c;--sys:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.stage{min-height:100vh;display:flex;justify-content:center;padding:14px 10px;}
+.app{width:100%;max-width:380px;background:var(--bg);border-radius:18px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.5);}
+.bar{display:flex;align-items:center;gap:10px;padding:13px 14px;background:#000;border-bottom:3px solid var(--red);}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none;}
+.bar .t{flex:1;min-width:0;}
+.bar .t b{display:block;font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar .t span{display:block;font-size:11px;color:var(--soft);margin-top:1px;}
+.tag{flex:none;background:var(--paper);color:var(--paperink);font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:5px 9px;border-radius:999px;}
+.body{padding:12px;}
+.paper{background:var(--paper);color:var(--paperink);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.dark{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:9px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;}
+.kv small{display:block;font-size:10px;color:#6b6b72;}
+.kv b{display:block;font-size:12.5px;font-weight:700;margin-top:1px;word-break:break-word;}
+.dark .kv small{color:var(--soft);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.stat{background:var(--red);border-radius:12px;padding:11px 4px;text-align:center;}
+.stat b{display:block;font-size:17px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;}
+.stat span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;opacity:.9;margin-top:2px;}
+.track{height:9px;background:#2a2a2d;border-radius:99px;overflow:hidden;}
+.paper .track{background:#e6e6ea;}
+.fill{height:100%;background:var(--red);border-radius:99px;}
+.foot{text-align:center;font-size:10.5px;color:var(--soft);margin-top:4px;}
+.hide{display:none!important;}
+.scroll{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:3px;scrollbar-width:thin;scrollbar-color:var(--red) transparent;}
+.scroll::-webkit-scrollbar{width:4px;}
+.scroll::-webkit-scrollbar-thumb{background:var(--red);border-radius:4px;}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:0 1px 10px;scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex:none;cursor:pointer;font-family:var(--sys);color:var(--soft);font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line);}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff;}
+
+.meter{margin-bottom:12px;}
+.meter:last-child{margin-bottom:0;}
+.mh{display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:6px;}
+.mh b{font-weight:800;}
+.mh span{color:#6b6b72;}
+.conn{display:flex;gap:8px;margin-bottom:10px;}
+.cn{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 11px;}
+.cn small{display:block;font-size:10px;color:var(--soft);}
+.cn b{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;margin-top:3px;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex:none;}
+.cn.on .dot{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.18);}
+.cn.on{border-color:#fff;}
+.cn i{display:block;font-style:normal;font-size:10px;color:var(--soft);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+</style>
+</head>
+<body>
+<div class="stage"><div class="app">
+<div class="bar"><div class="logo" id="logo">K</div><div class="t"><b id="bot">Bot</b><span id="sub"></span></div><div class="tag">Status</div></div>
+<div class="body">
+  <div class="stats">
+    <div class="stat"><b id="sPing">0</b><span>Ping (ms)</span></div>
+    <div class="stat"><b id="sUp">-</b><span>Uptime bot</span></div>
+    <div class="stat"><b id="sMode">-</b><span>Mode</span></div>
+  </div>
+  <div class="conn" id="conn"></div>
+  <div class="paper">
+    <div class="label">Sumber Daya</div>
+    <div id="meters"></div>
+  </div>
+  <div class="dark"><div class="label">Aktivitas Bot</div><div class="grid" id="act"></div></div>
+  <div class="paper"><div class="label">Server</div><div class="grid" id="srv"></div></div>
+  <div class="foot" id="foot"></div>
+</div>
+</div></div>
+<script>
+/* Data diisi otomatis oleh plugin lewat penanda DATA_START / DATA_END. Isi di bawah hanya contoh. */
+const DATA = /*DATA_START*/{
+  "bot": "Kaguya MD",
+  "cpu": 23,
+  "cpuModel": "AMD EPYC 7B13",
+  "cores": 4,
+  "load": [
+    "0.42",
+    "0.38",
+    "0.31"
+  ],
+  "ram": {
+    "used": 1820,
+    "total": 3900,
+    "pct": 47
+  },
+  "uptime": "2h 14m",
+  "osUptime": "12d 3h",
+  "node": "v20.11.0",
+  "platform": "linux x64",
+  "host": "vps-01",
+  "ping": 184,
+  "wa": {
+    "on": true,
+    "id": "6281234567890"
+  },
+  "tg": {
+    "on": false
+  },
+  "groups": 42,
+  "users": 318,
+  "plugins": 805,
+  "cmdTotal": "5.120",
+  "cmdToday": "212",
+  "mode": "Public",
+  "botram": {
+    "rss": 182,
+    "pct": 5
+  }
+}/*DATA_END*/;
+
+const $ = s => document.querySelector(s);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const kv = (k, v) => { const b = el('div', 'kv'); b.appendChild(el('small', null, k)); b.appendChild(el('b', null, String(v))); return b; };
+
+$('#bot').textContent = DATA.bot || 'Bot'; $('#logo').textContent = String(DATA.bot || 'B').trim().charAt(0).toUpperCase();
+
+$('#sub').textContent = 'Dashboard server';
+const D = DATA;
+$('#sPing').textContent = D.ping; $('#sUp').textContent = D.uptime; $('#sMode').textContent = D.mode;
+function conn(name, on, info) {
+  const c = el('div', 'cn' + (on ? ' on' : ''));
+  c.appendChild(el('small', null, name));
+  const b = el('b'); b.appendChild(el('span', 'dot')); b.appendChild(document.createTextNode(on ? 'Online' : 'Offline')); c.appendChild(b);
+  if (info) c.appendChild(el('i', null, info));
+  $('#conn').appendChild(c);
+}
+conn('WhatsApp', D.wa.on, D.wa.id && D.wa.id !== '-' ? '+' + D.wa.id : '');
+conn('Telegram', D.tg.on, '');
+function meter(label, pct, right) {
+  const m = el('div', 'meter');
+  const h = el('div', 'mh'); h.appendChild(el('b', null, label)); h.appendChild(el('span', null, right)); m.appendChild(h);
+  const t = el('div', 'track'); const f = el('div', 'fill'); f.style.width = Math.max(2, Math.min(100, pct)) + '%'; t.appendChild(f); m.appendChild(t);
+  $('#meters').appendChild(m);
+}
+meter('CPU', D.cpu, D.cpu + '% · ' + D.cores + ' core');
+meter('RAM server', D.ram.pct, D.ram.used + ' / ' + D.ram.total + ' MB');
+meter('RAM bot', D.botram.pct, D.botram.rss + ' MB');
+[['Grup', D.groups], ['User RPG', D.users], ['Plugin', D.plugins], ['Command hari ini', D.cmdToday], ['Total command', D.cmdTotal]].forEach(([k, v]) => $('#act').appendChild(kv(k, v)));
+[['Node', D.node], ['Platform', D.platform], ['Host', D.host], ['Uptime server', D.osUptime], ['Load avg', D.load.join(' / ')], ['CPU', D.cpuModel]].forEach(([k, v]) => $('#srv').appendChild(kv(k, v)));
+$('#foot').textContent = (D.bot || 'Bot') + ' · data saat kartu dikirim';
+
+</script>
+</body>
+</html>
