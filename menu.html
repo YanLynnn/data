@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menu Card</title>
+<style>
+:root{
+  --bg:#0b0b0c;
+  --card:#151516;
+  --card2:#1d1d1f;
+  --line:#2a2a2d;
+  --ink:#ffffff;
+  --soft:#a8a8ae;
+  --red:#e11d2e;
+  --red2:#b91424;
+  --paper:#ffffff;
+  --paperink:#0b0b0c;
+  --sys:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.stage{min-height:100vh;display:flex;justify-content:center;padding:14px 10px;}
+.app{width:100%;max-width:380px;background:var(--bg);border-radius:18px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.5);}
+
+/* ───────── hero foto ───────── */
+.hero{position:relative;height:190px;background:linear-gradient(135deg,var(--red),#4a0a10 70%,#0b0b0c);}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 25%;display:block;}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,.05) 20%,rgba(11,11,12,.55) 62%,var(--bg) 100%);}
+.hero .tag{position:absolute;z-index:2;top:12px;right:12px;background:var(--red);color:#fff;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:5px 10px;border-radius:999px;}
+.hero .who{position:absolute;z-index:2;left:14px;right:14px;bottom:10px;}
+.who h1{font-size:21px;font-weight:800;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.who p{font-size:12px;color:#d6d6da;margin-top:3px;}
+
+.body{padding:0 12px 14px;}
+
+/* ───────── statistik ───────── */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+.stat{background:var(--red);border-radius:12px;padding:11px 4px;text-align:center;}
+.stat b{display:block;font-size:18px;font-weight:800;}
+.stat span{display:block;font-size:9.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;opacity:.9;margin-top:2px;}
+
+/* ───────── kartu putih info bot ───────── */
+.paper{background:var(--paper);color:var(--paperink);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--red);margin-bottom:9px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;}
+.kv small{display:block;font-size:10px;color:#6b6b72;}
+.kv b{display:block;font-size:12.5px;font-weight:700;margin-top:1px;word-break:break-word;}
+
+/* ───────── kartu gelap akun ───────── */
+.dark{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.dark .kv small{color:var(--soft);}
+
+/* ───────── cari + tombol ───────── */
+.tools{display:flex;gap:8px;margin-bottom:10px;}
+.inp{flex:1;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 12px;color:var(--ink);font-size:14px;outline:none;font-family:var(--sys);}
+.inp:focus{border-color:var(--red);}
+.btn{flex:none;border:0;border-radius:12px;padding:0 13px;background:var(--paper);color:var(--paperink);font-size:12px;font-weight:800;cursor:pointer;font-family:var(--sys);}
+.btn:active{background:var(--red);color:#fff;}
+
+/* ───────── daftar kategori (accordion) ───────── */
+.cat{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:7px;overflow:hidden;}
+.cat.open{border-color:var(--red);}
+.cat-h{display:flex;align-items:center;gap:9px;padding:12px;cursor:pointer;}
+.cat-h .em{font-size:16px;flex:none;}
+.cat-h .nm{flex:1;font-size:13px;font-weight:750;text-transform:uppercase;letter-spacing:.4px;}
+.cat-h .ct{flex:none;font-size:11px;font-weight:800;background:var(--red);color:#fff;border-radius:999px;padding:3px 9px;}
+.cat-h .ar{flex:none;font-size:11px;color:var(--soft);transition:transform .15s;}
+.cat.open .ar{transform:rotate(180deg);}
+.cat-b{display:none;padding:0 10px 10px;}
+.cat.open .cat-b{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.cmd{font-family:var(--mono);font-size:11.5px;padding:8px 9px;border-radius:9px;background:var(--card2);color:#f1f1f3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.cmd:active,.cmd.hit{background:var(--red);color:#fff;}
+.cmd small{display:block;font-family:var(--sys);font-size:9px;color:var(--soft);margin-top:1px;}
+.cmd.hit small,.cmd:active small{color:#ffd5d9;}
+.empty{grid-column:1/-1;text-align:center;color:var(--soft);font-size:12px;padding:14px 0;}
+.res-h{font-size:11px;color:var(--soft);margin:2px 2px 8px;}
+
+.foot{text-align:center;font-size:10.5px;color:var(--soft);margin-top:12px;}
+.foot b{color:var(--red);}
+.hide{display:none!important;}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="app">
+
+    <div class="hero">
+      <img id="photo" alt="" class="hide">
+      <div class="tag" id="mode">Public</div>
+      <div class="who">
+        <h1 id="bot">Bot</h1>
+        <p id="hello">Hi!</p>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="stats">
+        <div class="stat"><b id="sFeat">0</b><span>Fitur</span></div>
+        <div class="stat"><b id="sCmd">0</b><span>Command</span></div>
+        <div class="stat"><b id="sCat">0</b><span>Kategori</span></div>
+      </div>
+
+      <div class="paper">
+        <div class="label">Info Bot</div>
+        <div class="grid" id="info"></div>
+      </div>
+
+      <div class="dark">
+        <div class="label">Akun Kamu</div>
+        <div class="grid kvs" id="acc"></div>
+      </div>
+
+      <div class="tools">
+        <input class="inp" id="q" type="text" placeholder="Cari command..." autocomplete="off">
+        <button class="btn" id="toggle">Buka semua</button>
+      </div>
+
+      <div id="out"></div>
+
+      <div class="foot" id="foot"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Data diisi otomatis oleh plugin (menurich.js) lewat penanda DATA_START / DATA_END.
+   Isi di bawah hanya contoh agar file ini bisa dilihat langsung di browser. */
+const DATA = /*DATA_START*/{
+  "bot": "Kaguya MD",
+  "name": "vzn",
+  "prefix": ".",
+  "mode": "Public",
+  "photo": "",
+  "features": 805,
+  "commands": 1916,
+  "info": [
+    ["Versi", "4.0.0"], ["Runtime", "9m 59s"],
+    ["Tipe", "ESM"], ["Library", "Baileys 7.0.0-rc"],
+    ["Node", "v20.11.0"], ["Platform", "linux x64"],
+    ["Memori", "182 MB / 3.8 GB"], ["Plugin", "805"],
+    ["Prefix", "."], ["Owner", "YannRzy"]
+  ],
+  "account": [
+    ["Akses", "User"], ["Rank", "Bronze"],
+    ["Level", "0"], ["EXP", "0"],
+    ["Limit", "∞"], ["Saldo", "Rp 0"]
+  ],
+  "categories": [
+    { "name": "rich", "emoji": "✨", "cmds": ["bird", "flappybird", "chess", "catur", "dinorun", "trexx", "highway", "pingx"] },
+    { "name": "main", "emoji": "🏠", "cmds": ["menu", "help", "ping", "owner", "script"] },
+    { "name": "download", "emoji": "📥", "cmds": ["tiktok", "ytmp3", "ytmp4", "instagram", "facebook"] },
+    { "name": "ai", "emoji": "🤖", "cmds": ["ai", "gemini", "gpt", "imagine"] }
+  ]
+}/*DATA_END*/;
+
+const $ = s => document.querySelector(s);
+const el = (tag, cls, text) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+};
+
+const cats = Array.isArray(DATA.categories) ? DATA.categories : [];
+const P = DATA.prefix || '.';
+const opened = new Set([0]);
+
+// ───────── header, foto, statistik ─────────
+$('#bot').textContent = DATA.bot || 'Bot';
+$('#hello').textContent = 'Hi, ' + (DATA.name || 'user') + '. Semua fitur ada di bawah.';
+$('#mode').textContent = DATA.mode || 'Public';
+$('#sFeat').textContent = DATA.features ?? 0;
+$('#sCmd').textContent = DATA.commands ?? 0;
+$('#sCat').textContent = cats.length;
+
+if (DATA.photo) {
+  const img = $('#photo');
+  img.onload = () => img.classList.remove('hide');
+  img.onerror = () => img.classList.add('hide');
+  img.src = DATA.photo;
+}
+
+function fillGrid(target, rows) {
+  (rows || []).forEach(([k, v]) => {
+    const box = el('div', 'kv');
+    box.appendChild(el('small', null, k));
+    box.appendChild(el('b', null, v));
+    target.appendChild(box);
+  });
+}
+fillGrid($('#info'), DATA.info);
+fillGrid($('#acc'), DATA.account);
+
+// ───────── item command ─────────
+function cmdNode(name, catName) {
+  const text = P + name;
+  const c = el('div', 'cmd', text);
+  if (catName) c.appendChild(el('small', null, catName));
+  c.addEventListener('click', () => {
+    c.classList.add('hit');
+    setTimeout(() => c.classList.remove('hit'), 220);
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text);
+    } catch (e) {}
+  });
+  return c;
+}
+
+// ───────── accordion kategori (isi dibuat saat dibuka) ─────────
+function renderCategories() {
+  const out = $('#out');
+  out.textContent = '';
+  const frag = document.createDocumentFragment();
+
+  cats.forEach((cat, i) => {
+    const box = el('div', 'cat' + (opened.has(i) ? ' open' : ''));
+
+    const head = el('div', 'cat-h');
+    head.appendChild(el('span', 'em', cat.emoji || '📁'));
+    head.appendChild(el('span', 'nm', cat.name));
+    head.appendChild(el('span', 'ct', String(cat.cmds.length)));
+    head.appendChild(el('span', 'ar', '▼'));
+
+    const body = el('div', 'cat-b');
+    let filled = false;
+    const fill = () => {
+      if (filled) return;
+      filled = true;
+      const f = document.createDocumentFragment();
+      cat.cmds.forEach(n => f.appendChild(cmdNode(n)));
+      body.appendChild(f);
+    };
+
+    if (opened.has(i)) fill();
+
+    head.addEventListener('click', () => {
+      const open = box.classList.toggle('open');
+      if (open) { opened.add(i); fill(); } else { opened.delete(i); }
+      syncToggle();
+    });
+
+    box.appendChild(head);
+    box.appendChild(body);
+    frag.appendChild(box);
+  });
+
+  out.appendChild(frag);
+}
+
+function syncToggle() {
+  $('#toggle').textContent = opened.size >= cats.length ? 'Tutup semua' : 'Buka semua';
+}
+
+$('#toggle').addEventListener('click', () => {
+  if ($('#q').value.trim()) return;
+  if (opened.size >= cats.length) opened.clear();
+  else cats.forEach((_, i) => opened.add(i));
+  renderCategories();
+  syncToggle();
+});
+
+// ───────── pencarian ─────────
+function doSearch(raw) {
+  const q = raw.trim().toLowerCase();
+  if (!q) { renderCategories(); syncToggle(); return; }
+
+  const out = $('#out');
+  out.textContent = '';
+
+  const hits = [];
+  for (const cat of cats) {
+    for (const n of cat.cmds) {
+      if (n.toLowerCase().includes(q)) hits.push([n, cat.name]);
+      if (hits.length >= 80) break;
+    }
+    if (hits.length >= 80) break;
+  }
+
+  out.appendChild(el('div', 'res-h', hits.length + (hits.length >= 80 ? '+' : '') + ' hasil untuk "' + raw.trim() + '"'));
+
+  const grid = el('div', 'cat open');
+  const inner = el('div', 'cat-b');
+  inner.style.paddingTop = '10px';
+
+  if (!hits.length) inner.appendChild(el('div', 'empty', 'Tidak ada command yang cocok.'));
+  else hits.forEach(([n, c]) => inner.appendChild(cmdNode(n, c)));
+
+  grid.appendChild(inner);
+  out.appendChild(grid);
+}
+
+$('#q').addEventListener('input', e => doSearch(e.target.value));
+
+$('#foot').innerHTML = '';
+$('#foot').appendChild(document.createTextNode((DATA.bot || 'Bot') + ' · '));
+$('#foot').appendChild(el('b', null, String(DATA.commands ?? 0)));
+$('#foot').appendChild(document.createTextNode(' command · ketuk untuk menyalin'));
+
+renderCategories();
+syncToggle();
+</script>
+</body>
+</html>
