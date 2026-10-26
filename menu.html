@@ -80,6 +80,12 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
 .foot{text-align:center;font-size:10.5px;color:var(--soft);margin-top:12px;}
 .foot b{color:var(--red);}
 .hide{display:none!important;}
+
+/* Tinggi daftar dikunci supaya tinggi kartu tidak berubah saat kategori dibuka/ditutup.
+   WhatsApp tidak mengecilkan kartu lagi setelah membesar (sisanya jadi kosong hitam). */
+.scroll{height:340px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:3px;scrollbar-width:thin;scrollbar-color:var(--red) transparent;}
+.scroll::-webkit-scrollbar{width:4px;}
+.scroll::-webkit-scrollbar-thumb{background:var(--red);border-radius:4px;}
 </style>
 </head>
 <body>
@@ -117,7 +123,7 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
         <button class="btn" id="toggle">Buka semua</button>
       </div>
 
-      <div id="out"></div>
+      <div class="scroll" id="scroller"><div id="out"></div></div>
 
       <div class="foot" id="foot"></div>
     </div>
@@ -209,8 +215,9 @@ function cmdNode(name, catName) {
 }
 
 // ───────── accordion kategori (isi dibuat saat dibuka) ─────────
-function renderCategories() {
+function renderCategories(keepScroll) {
   const out = $('#out');
+  const top = $('#scroller').scrollTop;
   out.textContent = '';
   const frag = document.createDocumentFragment();
 
@@ -247,6 +254,7 @@ function renderCategories() {
   });
 
   out.appendChild(frag);
+  $('#scroller').scrollTop = keepScroll ? top : 0;
 }
 
 function syncToggle() {
@@ -257,17 +265,18 @@ $('#toggle').addEventListener('click', () => {
   if ($('#q').value.trim()) return;
   if (opened.size >= cats.length) opened.clear();
   else cats.forEach((_, i) => opened.add(i));
-  renderCategories();
+  renderCategories(false);
   syncToggle();
 });
 
 // ───────── pencarian ─────────
 function doSearch(raw) {
   const q = raw.trim().toLowerCase();
-  if (!q) { renderCategories(); syncToggle(); return; }
+  if (!q) { renderCategories(false); syncToggle(); return; }
 
   const out = $('#out');
   out.textContent = '';
+  $('#scroller').scrollTop = 0;
 
   const hits = [];
   for (const cat of cats) {
@@ -298,7 +307,7 @@ $('#foot').appendChild(document.createTextNode((DATA.bot || 'Bot') + ' · '));
 $('#foot').appendChild(el('b', null, String(DATA.commands ?? 0)));
 $('#foot').appendChild(document.createTextNode(' command · ketuk untuk menyalin'));
 
-renderCategories();
+renderCategories(false);
 syncToggle();
 </script>
 </body>
