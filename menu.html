@@ -83,9 +83,15 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
 
 /* Tinggi daftar dikunci supaya tinggi kartu tidak berubah saat kategori dibuka/ditutup.
    WhatsApp tidak mengecilkan kartu lagi setelah membesar (sisanya jadi kosong hitam). */
-.scroll{height:340px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-right:3px;scrollbar-width:thin;scrollbar-color:var(--red) transparent;}
-.scroll::-webkit-scrollbar{width:4px;}
-.scroll::-webkit-scrollbar-thumb{background:var(--red);border-radius:4px;}
+.scrollwrap{position:relative;}
+/* Tidak bisa digeser dengan jari (overflow hidden, tanpa scrollbar). Gulir hanya lewat tombol ▲ ▼ di pojok kanan bawah. */
+.scroll{height:340px;overflow:hidden;scrollbar-width:none;}
+.scroll::-webkit-scrollbar{display:none;}
+.nav{position:absolute;right:8px;bottom:8px;z-index:5;display:flex;flex-direction:column;gap:7px;}
+.nav button{width:42px;height:42px;border:0;border-radius:50%;background:var(--red);color:#fff;font-size:17px;font-weight:800;line-height:1;cursor:pointer;font-family:var(--sys);box-shadow:0 4px 12px rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;}
+.nav button:active{background:var(--red2);transform:scale(.93);}
+.nav button:disabled{background:var(--card2);color:#5d5d63;box-shadow:none;cursor:default;}
+.pg{position:absolute;left:8px;bottom:8px;z-index:5;background:rgba(11,11,12,.85);border:1px solid var(--line);color:var(--soft);font-size:10px;font-weight:800;letter-spacing:.5px;padding:4px 9px;border-radius:999px;pointer-events:none;}
 </style>
 </head>
 <body>
@@ -123,7 +129,14 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
         <button class="btn" id="toggle">Buka semua</button>
       </div>
 
-      <div class="scroll" id="scroller"><div id="out"></div></div>
+      <div class="scrollwrap">
+        <div class="scroll" id="scroller"><div id="out"></div></div>
+        <div class="pg" id="pg">1/1</div>
+        <div class="nav">
+          <button id="up" type="button" aria-label="Naik" disabled>▲</button>
+          <button id="down" type="button" aria-label="Turun">▼</button>
+        </div>
+      </div>
 
       <div class="foot" id="foot"></div>
     </div>
@@ -257,7 +270,36 @@ function renderCategories(keepScroll) {
   $('#scroller').scrollTop = keepScroll ? top : 0;
 }
 
+// ───────── tombol gulir (pojok kanan bawah) ─────────
+function navState() {
+  const sc = $('#scroller');
+  const max = Math.max(0, sc.scrollHeight - sc.clientHeight);
+  const top = Math.round(sc.scrollTop);
+  $('#up').disabled = top <= 1;
+  $('#down').disabled = top >= max - 1;
+  const step = Math.max(1, sc.clientHeight * 0.85);
+  const pages = Math.max(1, Math.ceil(max / step) + 1);
+  const now = top >= max - 1 ? pages : Math.min(pages, Math.round(top / step) + 1);
+  $('#pg').textContent = now + '/' + pages;
+  $('#pg').classList.toggle('hide', max <= 1);
+  $('#up').parentElement.classList.toggle('hide', max <= 1);
+}
+
+function scrollStep(dir) {
+  const sc = $('#scroller');
+  sc.scrollBy({ top: dir * Math.max(1, sc.clientHeight * 0.85), behavior: 'smooth' });
+  setTimeout(navState, 350);
+}
+
+$('#up').addEventListener('click', () => scrollStep(-1));
+$('#down').addEventListener('click', () => scrollStep(1));
+$('#scroller').addEventListener('scroll', navState);
+// geser dengan jari / roda mouse dimatikan, hanya tombol yang menggulir
+['touchmove', 'wheel'].forEach(t => $('#scroller').addEventListener(t, e => e.preventDefault(), { passive: false }));
+window.addEventListener('resize', navState);
+
 function syncToggle() {
+  setTimeout(navState, 0);
   $('#toggle').textContent = opened.size >= cats.length ? 'Tutup semua' : 'Buka semua';
 }
 
@@ -298,6 +340,7 @@ function doSearch(raw) {
 
   grid.appendChild(inner);
   out.appendChild(grid);
+  setTimeout(navState, 0);
 }
 
 $('#q').addEventListener('input', e => doSearch(e.target.value));
