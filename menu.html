@@ -64,9 +64,9 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
 .badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
 .bdg{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--card2);border:1px solid var(--line);color:#e8e8ec;}
 .bdg.hot{background:var(--red);border-color:var(--red);color:#fff;}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px 8px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;}
 /* nilai statistik: putus hanya di spasi, angka seperti 100/100 tidak dipotong */
-.grid3 .kv b{font-size:12px;word-break:normal;overflow-wrap:break-word;}
+.grid3 .kv b{font-size:12.5px;word-break:normal;overflow-wrap:normal;}
 
 /* ───────── cari + tombol ───────── */
 .tools{display:flex;gap:8px;margin-bottom:10px;}
@@ -98,6 +98,7 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
 .res-h{font-size:11px;color:var(--soft);margin:2px 2px 8px;}
 
 .legend{font-size:10px;color:var(--soft);text-align:center;margin:0 0 10px;line-height:1.6;}
+.note{margin-top:12px;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:12px;font-size:11px;line-height:1.55;color:#d6d6da;white-space:pre-wrap;word-break:break-word;}
 .foot{text-align:center;font-size:10.5px;color:var(--soft);margin-top:12px;}
 .foot b{color:var(--red);}
 .hide{display:none!important;}
@@ -155,7 +156,7 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
       </div>
 
       <div class="tools">
-        <input class="inp" id="q" type="text" placeholder="Cari command..." autocomplete="off">
+        <input class="inp" id="q" type="text" placeholder="Cari..." autocomplete="off">
         <button class="btn" id="toggle">Buka semua</button>
       </div>
 
@@ -170,6 +171,7 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
         </div>
       </div>
 
+      <div class="note hide" id="note"></div>
       <div class="foot" id="foot"></div>
     </div>
   </div>
@@ -254,7 +256,7 @@ const EMOJI = {
   tebak:'❓', boardgame:'♟️', wiki:'📚', roleplay:'🎭', rpg:'🗡️', user:'👤', owner:'👑'
 };
 const catTitle = n => String(n).split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-const catCount = c => c.total ?? c.cmds.length;
+const catCount = c => c.cmds.length;
 const cmdName = x => Array.isArray(x) ? x[0] : x;
 const cmdMark = x => Array.isArray(x) ? (x[1] || '') : '';
 
@@ -282,7 +284,7 @@ $('#sCat').textContent = cats.length;
 
 // Gambar: kalau gagal dimuat, hero tetap gradien merah dan avatar tetap huruf awal nama.
 function showImage(img, src) {
-  if (!src) return;
+  if (!src || typeof src !== 'string') return;
   img.onload = () => img.classList.remove('hide');
   img.onerror = () => img.classList.add('hide');
   img.src = src;
@@ -354,8 +356,6 @@ function renderCategories(keepScroll) {
       filled = true;
       const f = document.createDocumentFragment();
       cat.cmds.forEach(n => f.appendChild(cmdNode(n)));
-      const rest = catCount(cat) - cat.cmds.length;
-      if (rest > 0) f.appendChild(el('div', 'more', '+' + rest + ' lainnya, ketik ' + P + 'menu ' + cat.name));
       body.appendChild(f);
       $('#legend').classList.toggle('hide', !anyMark);
     };
@@ -452,6 +452,7 @@ function doSearch(raw) {
 
 $('#q').addEventListener('input', e => doSearch(e.target.value));
 
+if (DATA.footer && String(DATA.footer).trim()) { $('#note').textContent = String(DATA.footer).trim(); $('#note').classList.remove('hide'); }
 $('#foot').innerHTML = '';
 $('#foot').appendChild(document.createTextNode((DATA.bot || 'Bot') + ' · '));
 $('#foot').appendChild(el('b', null, String(DATA.commands ?? 0)));
