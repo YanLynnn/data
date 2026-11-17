@@ -29,6 +29,7 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 25%;display:block;}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,.05) 20%,rgba(11,11,12,.55) 62%,var(--bg) 100%);}
 .hero .tag{position:absolute;z-index:2;top:12px;right:12px;background:var(--red);color:#fff;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:5px 10px;border-radius:999px;}
+.hero .ver{position:absolute;z-index:2;top:12px;left:12px;background:rgba(11,11,12,.7);border:1px solid var(--line);color:#fff;font-size:10px;font-weight:800;letter-spacing:.6px;padding:5px 10px;border-radius:999px;}
 .hero .who{position:absolute;z-index:2;left:14px;right:14px;bottom:10px;}
 .who h1{font-size:21px;font-weight:800;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .who p{font-size:12px;color:#d6d6da;margin-top:3px;}
@@ -48,9 +49,19 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
 .kv small{display:block;font-size:10px;color:#6b6b72;}
 .kv b{display:block;font-size:12.5px;font-weight:700;margin-top:1px;word-break:break-word;}
 
-/* ───────── kartu gelap akun ───────── */
+/* ───────── kartu gelap profil user ───────── */
 .dark{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
 .dark .kv small{color:var(--soft);}
+.prof{display:flex;align-items:center;gap:11px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+.ava{position:relative;flex:none;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--red2));overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;border:2px solid var(--red);}
+.ava img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.pmeta{min-width:0;flex:1;}
+.pmeta h2{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pmeta p{font-size:11px;color:var(--soft);margin-top:2px;font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.bdg{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--card2);border:1px solid var(--line);color:#e8e8ec;}
+.bdg.hot{background:var(--red);border-color:var(--red);color:#fff;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px 8px;}
 
 /* ───────── cari + tombol ───────── */
 .tools{display:flex;gap:8px;margin-bottom:10px;}
@@ -64,19 +75,23 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
 .cat.open{border-color:var(--red);}
 .cat-h{display:flex;align-items:center;gap:9px;padding:12px;cursor:pointer;}
 .cat-h .em{font-size:16px;flex:none;}
-.cat-h .nm{flex:1;font-size:13px;font-weight:750;text-transform:uppercase;letter-spacing:.4px;}
+.cat-h .nm{flex:1;min-width:0;font-size:13px;font-weight:750;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cat-h .ct{flex:none;font-size:11px;font-weight:800;background:var(--red);color:#fff;border-radius:999px;padding:3px 9px;}
 .cat-h .ar{flex:none;font-size:11px;color:var(--soft);transition:transform .15s;}
 .cat.open .ar{transform:rotate(180deg);}
 .cat-b{display:none;padding:0 10px 10px;}
 .cat.open .cat-b{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
 .cmd{font-family:var(--mono);font-size:11.5px;padding:8px 9px;border-radius:9px;background:var(--card2);color:#f1f1f3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.cmd i{font-style:normal;font-family:var(--sys);font-size:10px;color:var(--soft);margin-left:4px;}
 .cmd:active,.cmd.hit{background:var(--red);color:#fff;}
+.cmd:active i,.cmd.hit i{color:#ffd5d9;}
 .cmd small{display:block;font-family:var(--sys);font-size:9px;color:var(--soft);margin-top:1px;}
 .cmd.hit small,.cmd:active small{color:#ffd5d9;}
+.more{grid-column:1/-1;text-align:center;font-size:10.5px;color:var(--soft);padding:4px 0 0;}
 .empty{grid-column:1/-1;text-align:center;color:var(--soft);font-size:12px;padding:14px 0;}
 .res-h{font-size:11px;color:var(--soft);margin:2px 2px 8px;}
 
+.legend{font-size:10px;color:var(--soft);text-align:center;margin:0 0 10px;line-height:1.6;}
 .foot{text-align:center;font-size:10.5px;color:var(--soft);margin-top:12px;}
 .foot b{color:var(--red);}
 .hide{display:none!important;}
@@ -100,6 +115,7 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
 
     <div class="hero">
       <img id="photo" alt="" class="hide">
+      <div class="ver" id="ver">v1</div>
       <div class="tag" id="mode">Public</div>
       <div class="who">
         <h1 id="bot">Bot</h1>
@@ -120,14 +136,24 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
       </div>
 
       <div class="dark">
-        <div class="label">Akun Kamu</div>
-        <div class="grid kvs" id="acc"></div>
+        <div class="label">Profil Kamu</div>
+        <div class="prof">
+          <div class="ava" id="ava"><span id="avaTxt">?</span><img id="avaImg" alt="" class="hide"></div>
+          <div class="pmeta">
+            <h2 id="pName">User</h2>
+            <p id="pNum">-</p>
+            <div class="badges" id="pBadges"></div>
+          </div>
+        </div>
+        <div class="grid3" id="acc"></div>
       </div>
 
       <div class="tools">
         <input class="inp" id="q" type="text" placeholder="Cari command..." autocomplete="off">
         <button class="btn" id="toggle">Buka semua</button>
       </div>
+
+      <div class="legend hide" id="legend">Ⓛ limit · Ⓟ premium · Ⓞ owner · Ⓖ grup · Ⓐ admin</div>
 
       <div class="scrollwrap">
         <div class="scroll" id="scroller"><div id="out"></div></div>
@@ -144,33 +170,653 @@ html,body{background:transparent;color:var(--ink);font-family:var(--sys);min-hei
 </div>
 
 <script>
-/* Data diisi otomatis oleh plugin (menurich.js) lewat penanda DATA_START / DATA_END.
-   Isi di bawah hanya contoh agar file ini bisa dilihat langsung di browser. */
+/* Data diisi otomatis oleh plugin lewat penanda DATA_START / DATA_END.
+   Isi di bawah hanya contoh (diambil dari struktur Kaguya MD 9.0.0) agar file ini bisa dilihat langsung di browser.
+
+   Format data:
+   - photo        : URL foto menu (global.thumb.menu dari config.js)
+   - profile      : { name, number, photo, status, device, stats: [[label, nilai], ...] }
+   - categories[] : { name, emoji?, total?, cmds: ["nama" | ["nama","Ⓛ"]] }
+                    total = jumlah asli command kategori (kalau cmds hanya sebagian)
+   - account      : (lama, masih didukung) dipakai kalau profile tidak ada */
 const DATA = /*DATA_START*/{
   "bot": "Kaguya MD",
-  "name": "vzn",
+  "name": "Vzn",
   "prefix": ".",
   "mode": "Public",
-  "photo": "",
-  "features": 805,
-  "commands": 1916,
+  "photo": "https://cdn.zass.in/RrUlo3Gwh4.jpg",
+  "features": 1632,
+  "commands": 2474,
   "info": [
-    ["Versi", "4.0.0"], ["Runtime", "9m 59s"],
-    ["Tipe", "ESM"], ["Library", "Baileys 7.0.0-rc"],
-    ["Node", "v20.11.0"], ["Platform", "linux x64"],
-    ["Memori", "182 MB / 3.8 GB"], ["Plugin", "805"],
-    ["Prefix", "."], ["Owner", "YannRzy"]
+    [
+      "Versi",
+      "9.0.0"
+    ],
+    [
+      "Runtime",
+      "9m 59s"
+    ],
+    [
+      "Tipe",
+      "ESM"
+    ],
+    [
+      "Library",
+      "Baileys 7.0.0-rc14"
+    ],
+    [
+      "Node",
+      "v20.11.0"
+    ],
+    [
+      "Platform",
+      "WhatsApp + Telegram"
+    ],
+    [
+      "Database",
+      "SQLite"
+    ],
+    [
+      "Memori",
+      "182 MB / 3.8 GB"
+    ],
+    [
+      "Plugin",
+      "1632"
+    ],
+    [
+      "Prefix",
+      ". ! ,"
+    ],
+    [
+      "Owner",
+      "ImYanXian"
+    ],
+    [
+      "Mode",
+      "Public"
+    ]
   ],
-  "account": [
-    ["Akses", "User"], ["Rank", "Bronze"],
-    ["Level", "0"], ["EXP", "0"],
-    ["Limit", "∞"], ["Saldo", "Rp 0"]
-  ],
+  "profile": {
+    "name": "Vzn",
+    "number": "6285956337454",
+    "photo": "",
+    "status": "Free User",
+    "device": "Android",
+    "stats": [
+      [
+        "Level",
+        "0 (Bronze)"
+      ],
+      [
+        "EXP",
+        "0"
+      ],
+      [
+        "Limit",
+        "10"
+      ],
+      [
+        "Uang",
+        "Rp 0"
+      ],
+      [
+        "Bank",
+        "Rp 0"
+      ],
+      [
+        "Health",
+        "100/100"
+      ]
+    ]
+  },
   "categories": [
-    { "name": "rich", "emoji": "✨", "cmds": ["bird", "flappybird", "chess", "catur", "dinorun", "trexx", "highway", "pingx"] },
-    { "name": "main", "emoji": "🏠", "cmds": ["menu", "help", "ping", "owner", "script"] },
-    { "name": "download", "emoji": "📥", "cmds": ["tiktok", "ytmp3", "ytmp4", "instagram", "facebook"] },
-    { "name": "ai", "emoji": "🤖", "cmds": ["ai", "gemini", "gpt", "imagine"] }
+    {
+      "name": "main",
+      "total": 20,
+      "cmds": [
+        "cekprem",
+        "menu",
+        "menutype",
+        "help",
+        "owner",
+        "ping",
+        "report",
+        "runtime"
+      ]
+    },
+    {
+      "name": "premium",
+      "total": 41,
+      "cmds": [
+        "alight",
+        "amlist",
+        "amdrive",
+        "amlink",
+        "ampreset",
+        "amtiktok",
+        "ambulk",
+        "amfinder"
+      ]
+    },
+    {
+      "name": "ai",
+      "total": 54,
+      "cmds": [
+        "addai",
+        "delai",
+        "aicover",
+        "covermodels",
+        "coverpatrick",
+        "covervillager",
+        "covermiku",
+        "blackbox"
+      ]
+    },
+    {
+      "name": "gacha-nokos",
+      "total": 14,
+      "cmds": [
+        "cekotp",
+        "gachanokos",
+        "nokosid",
+        "nokos62",
+        "nomorid",
+        "nokosriwayat",
+        "riwayatnokos",
+        "notifnokos"
+      ]
+    },
+    {
+      "name": "reseller-panel",
+      "total": 12,
+      "cmds": [
+        "belipanel",
+        "pesan",
+        "produk",
+        "order",
+        "bayar",
+        "detail",
+        "orders",
+        "garansi"
+      ]
+    },
+    {
+      "name": "reseller-premku",
+      "total": 12,
+      "cmds": [
+        "pkbeli",
+        "pkdepcancel",
+        "pkdeposit",
+        "pkdepstatus",
+        "pkdetail",
+        "pkorder",
+        "pkproduk",
+        "pkprofil"
+      ]
+    },
+    {
+      "name": "store",
+      "total": 40,
+      "cmds": [
+        "acc",
+        "addproduk",
+        "addstok",
+        "batalbayar",
+        "bataldonasi",
+        "batalorder",
+        "bukti",
+        "caritoko"
+      ]
+    },
+    {
+      "name": "sewa-bot",
+      "total": 12,
+      "cmds": [
+        "accsewa",
+        "addsewa",
+        "batalsewa",
+        "buktisewa",
+        "cekbayarsewa",
+        "ceksewa",
+        "delsewa",
+        "listsewa"
+      ]
+    },
+    {
+      "name": "gopay-merchant",
+      "total": 9,
+      "cmds": [
+        "beli",
+        "donasi",
+        "merchantcek",
+        "order",
+        "qrcard",
+        "ringkasan",
+        "strukpdf",
+        "tesaluran"
+      ]
+    },
+    {
+      "name": "rich",
+      "total": 33,
+      "cmds": [
+        "bird",
+        "bjlive",
+        "breakout",
+        "caturlive",
+        "cemelive",
+        "chess",
+        "damlive",
+        "destroy"
+      ]
+    },
+    {
+      "name": "panel",
+      "total": 18,
+      "cmds": [
+        "kaguyapanel",
+        "kpanel",
+        "panelmenu",
+        "ramlist",
+        "tutorial",
+        "panelmanage",
+        "2",
+        "panelriwayat"
+      ]
+    },
+    {
+      "name": "channel",
+      "total": 22,
+      "cmds": [
+        "chcreate",
+        "chdesc",
+        "chfollow",
+        "chinfo",
+        "chmute",
+        "chname",
+        "chpp",
+        "chptv"
+      ]
+    },
+    {
+      "name": "github",
+      "total": 10,
+      "cmds": [
+        "clone",
+        "create",
+        "ghdelete",
+        "push",
+        "raw",
+        "repos",
+        "search",
+        "settoken"
+      ]
+    },
+    {
+      "name": "vercel",
+      "total": 13,
+      "cmds": [
+        "setvercel",
+        "vercel",
+        "adddomain",
+        "addsub",
+        "cekdomain",
+        "deldomain",
+        "delvercel",
+        "deployvercel"
+      ]
+    },
+    {
+      "name": "vps",
+      "total": 34,
+      "cmds": [
+        "cekvps",
+        "cekdroplet",
+        "infovps",
+        "vpsstatus",
+        "createvps",
+        "vps1g1c",
+        "vps2g1c",
+        "vps2g2c"
+      ]
+    },
+    {
+      "name": "group",
+      "total": 106,
+      "cmds": [
+        "absen",
+        "topabsen",
+        "accreq",
+        "tolakreq",
+        "listreq",
+        "accjoin",
+        "tolakjoin",
+        "reqjoin"
+      ]
+    },
+    {
+      "name": "jpm",
+      "total": 43,
+      "cmds": [
+        "autojpm",
+        "autojpmtag",
+        "autoswgc",
+        "blacklistjpm",
+        "bljpm",
+        "jpmbl",
+        "jpmblacklist",
+        "listblacklistjpm"
+      ]
+    },
+    {
+      "name": "pushkontak",
+      "total": 19,
+      "cmds": [
+        "pushkontak",
+        "puskontak",
+        "pushkontak2",
+        "puskontak2",
+        "push2",
+        "savekontak",
+        "svkontak",
+        "savecontact"
+      ]
+    },
+    {
+      "name": "sticker",
+      "total": 43,
+      "cmds": [
+        "antic",
+        "attp",
+        "brat",
+        "bratimg",
+        "bratanime",
+        "bratbahlil",
+        "brathd",
+        "bratpatrick"
+      ]
+    },
+    {
+      "name": "maker",
+      "total": 182,
+      "cmds": [
+        "1917style",
+        "advancedglow",
+        "afinitasml",
+        "afinitas",
+        "mlafinitas",
+        "afinitasml2",
+        "amongustext",
+        "angelnick"
+      ]
+    },
+    {
+      "name": "anime",
+      "total": 26,
+      "cmds": [
+        "alqanime",
+        "anibatch",
+        "anichin",
+        "anilist",
+        "animedl",
+        "animewall",
+        "anischedule",
+        "autoanimewinbu"
+      ]
+    },
+    {
+      "name": "download",
+      "total": 89,
+      "cmds": [
+        "aio",
+        "aio2",
+        "apkdl",
+        "applemusicdl",
+        "amcari",
+        "amdl",
+        "amplay",
+        "applecari"
+      ]
+    },
+    {
+      "name": "stalker",
+      "total": 11,
+      "cmds": [
+        "ffstalk",
+        "ffstalk2",
+        "igstalk",
+        "mlstalk",
+        "robloxstalk",
+        "threadsstalk",
+        "ttprofile",
+        "ttregion"
+      ]
+    },
+    {
+      "name": "fun",
+      "total": 132,
+      "cmds": [
+        "koin",
+        "pilih",
+        "tanya",
+        "apakah",
+        "bagaimanakah",
+        "bisakah",
+        "bjsolo",
+        "stand"
+      ]
+    },
+    {
+      "name": "menfess",
+      "total": 23,
+      "cmds": [
+        "balas",
+        "balasmenfess",
+        "bm",
+        "banmenfess",
+        "unbanmenfess",
+        "listbanmenfess",
+        "statmenfess",
+        "blokmenfess"
+      ]
+    },
+    {
+      "name": "tools",
+      "total": 87,
+      "cmds": [
+        "aidetect",
+        "barcode",
+        "base64",
+        "biner2text",
+        "bypass",
+        "calc",
+        "cariloker",
+        "cekbio"
+      ]
+    },
+    {
+      "name": "search",
+      "total": 88,
+      "cmds": [
+        "harini",
+        "briefing",
+        "hariini",
+        "ringkasan",
+        "setkota",
+        "setlahir",
+        "today",
+        "berita"
+      ]
+    },
+    {
+      "name": "asisten",
+      "total": 97,
+      "cmds": [
+        "acakan",
+        "spin",
+        "undi",
+        "bagitim",
+        "urutan",
+        "bandingharga",
+        "bangun",
+        "luas"
+      ]
+    },
+    {
+      "name": "audio",
+      "total": 22,
+      "cmds": [
+        "apulsator",
+        "audio8d",
+        "bass",
+        "blown",
+        "chorus",
+        "cut",
+        "deep",
+        "distortion"
+      ]
+    },
+    {
+      "name": "clan",
+      "total": 28,
+      "cmds": [
+        "clanannounce",
+        "clanbank",
+        "clanboss",
+        "clanceckin",
+        "clancreate",
+        "clandemote",
+        "clandesc",
+        "claninfo"
+      ]
+    },
+    {
+      "name": "convert",
+      "total": 70,
+      "cmds": [
+        "blur",
+        "compress",
+        "compressvid",
+        "kwitansi",
+        "invoice",
+        "suratizin",
+        "suratlamaran",
+        "cv"
+      ]
+    },
+    {
+      "name": "cek",
+      "total": 166,
+      "cmds": [
+        "cekalay",
+        "cekbahagia",
+        "cekbaik",
+        "cekbaper",
+        "cekbau",
+        "cekbego",
+        "cekberat",
+        "berat"
+      ]
+    },
+    {
+      "name": "game",
+      "total": 31,
+      "cmds": [
+        "adu",
+        "aduotak",
+        "kuisduel",
+        "akinator",
+        "asahotak",
+        "bf",
+        "bomb",
+        "bonanza"
+      ]
+    },
+    {
+      "name": "tebak",
+      "total": 26,
+      "cmds": [
+        "tebakanime",
+        "tebakanml",
+        "tebakbenda",
+        "tebakbendera",
+        "tebakbuah",
+        "tebakepep",
+        "tebakfilm",
+        "tebakgambar"
+      ]
+    },
+    {
+      "name": "boardgame",
+      "total": 135,
+      "cmds": [
+        "bj-double",
+        "bj-hand",
+        "bj-help",
+        "bj-hit",
+        "bj-join",
+        "bj-stand",
+        "bj-start",
+        "bj-stop"
+      ]
+    },
+    {
+      "name": "wiki",
+      "total": 75,
+      "cmds": [
+        "anime-karakter-wiki",
+        "arknights-faksi",
+        "arknights-kelas",
+        "arknights-operator",
+        "bluearchive-role",
+        "bluearchive-sekolah",
+        "bluearchive-tipe",
+        "fgo-kelas"
+      ]
+    },
+    {
+      "name": "roleplay",
+      "total": 133,
+      "cmds": [
+        "bajaklaut-beli",
+        "bajaklaut-daftar",
+        "bajaklaut-daily",
+        "bajaklaut-harta",
+        "bajaklaut-jarah",
+        "bajaklaut-layar",
+        "bajaklaut-peran",
+        "bajaklaut-pesta"
+      ]
+    },
+    {
+      "name": "rpg",
+      "total": 342,
+      "cmds": [
+        "addrpg",
+        "aim",
+        "airdrop",
+        "akuntt",
+        "akunyt",
+        "alchemy",
+        "arena",
+        "atmall"
+      ]
+    },
+    {
+      "name": "user",
+      "total": 56,
+      "cmds": [
+        "addpasangan",
+        "birthdaylist",
+        "buathadiah",
+        "buyenergi",
+        "buyfitur",
+        "couple-card",
+        "couple-date",
+        "couple-kasih"
+      ]
+    }
   ]
 }/*DATA_END*/;
 
@@ -186,9 +832,37 @@ const cats = Array.isArray(DATA.categories) ? DATA.categories : [];
 const P = DATA.prefix || '.';
 const opened = new Set([0]);
 
+// emoji otomatis per nama folder plugin Kaguya (dipakai kalau kategori tidak membawa emoji sendiri)
+const EMOJI = {
+  main:'🏠', premium:'💎', ai:'🤖', 'gacha-nokos':'📱', 'reseller-panel':'🖥️', 'reseller-premku':'🛒',
+  store:'🏪', 'sewa-bot':'🤝', 'gopay-merchant':'💳', rich:'✨', panel:'🧩', channel:'📢',
+  github:'🐙', vercel:'▲', vps:'☁️', group:'👥', jpm:'📣', pushkontak:'📇', sticker:'🎴',
+  maker:'🎨', anime:'🌸', download:'📥', stalker:'🔎', fun:'🎉', menfess:'💌', tools:'🛠️',
+  search:'🔍', asisten:'🗂️', audio:'🎧', clan:'⚔️', convert:'🔄', cek:'🧪', game:'🎮',
+  tebak:'❓', boardgame:'♟️', wiki:'📚', roleplay:'🎭', rpg:'🗡️', user:'👤', owner:'👑'
+};
+const catTitle = n => String(n).split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+const catCount = c => c.total ?? c.cmds.length;
+const cmdName = x => Array.isArray(x) ? x[0] : x;
+const cmdMark = x => Array.isArray(x) ? (x[1] || '') : '';
+
 // ───────── header, foto, statistik ─────────
+function greeting() {
+  let h;
+  try { h = +new Intl.DateTimeFormat('en-GB', { hour: '2-digit', hour12: false, timeZone: 'Asia/Jakarta' }).format(new Date()) % 24; }
+  catch (e) { h = new Date().getHours(); }
+  if (h < 4) return 'Selamat malam';
+  if (h < 11) return 'Selamat pagi';
+  if (h < 15) return 'Selamat siang';
+  if (h < 18) return 'Selamat sore';
+  return 'Selamat malam';
+}
+const pf = DATA.profile || {};
+const userName = pf.name || DATA.name || 'user';
+
 $('#bot').textContent = DATA.bot || 'Bot';
-$('#hello').textContent = 'Hi, ' + (DATA.name || 'user') + '. Semua fitur ada di bawah.';
+$('#ver').textContent = 'v' + ((DATA.info || []).find(r => /versi/i.test(r[0])) || [0, ''])[1];
+$('#hello').textContent = greeting() + ', ' + userName + '. Semua fitur ada di bawah.';
 $('#mode').textContent = DATA.mode || 'Public';
 $('#sFeat').textContent = DATA.features ?? 0;
 $('#sCmd').textContent = DATA.commands ?? 0;
@@ -210,12 +884,33 @@ function fillGrid(target, rows) {
   });
 }
 fillGrid($('#info'), DATA.info);
-fillGrid($('#acc'), DATA.account);
+
+// ───────── profil user ─────────
+$('#pName').textContent = userName;
+$('#pNum').textContent = pf.number ? '+' + String(pf.number).replace(/^\+/, '') : '';
+if (!pf.number) $('#pNum').classList.add('hide');
+$('#avaTxt').textContent = (String(userName).trim().charAt(0) || '?').toUpperCase();
+if (pf.photo) {
+  const ai = $('#avaImg');
+  ai.onload = () => ai.classList.remove('hide');
+  ai.onerror = () => ai.classList.add('hide');
+  ai.src = pf.photo;
+}
+[pf.status, pf.device].filter(Boolean).forEach((t, i) => {
+  const hot = i === 0 && /owner|premium|admin/i.test(t);
+  $('#pBadges').appendChild(el('span', 'bdg' + (hot ? ' hot' : ''), t));
+});
+const stats = pf.stats || DATA.account || [];
+fillGrid($('#acc'), stats);
+if (!pf.stats && DATA.account) $('#acc').className = 'grid';
 
 // ───────── item command ─────────
-function cmdNode(name, catName) {
+let anyMark = false;
+function cmdNode(entry, catName) {
+  const name = cmdName(entry), mark = cmdMark(entry);
   const text = P + name;
   const c = el('div', 'cmd', text);
+  if (mark) { anyMark = true; c.appendChild(el('i', null, mark)); }
   if (catName) c.appendChild(el('small', null, catName));
   c.addEventListener('click', () => {
     c.classList.add('hit');
@@ -238,9 +933,9 @@ function renderCategories(keepScroll) {
     const box = el('div', 'cat' + (opened.has(i) ? ' open' : ''));
 
     const head = el('div', 'cat-h');
-    head.appendChild(el('span', 'em', cat.emoji || '📁'));
-    head.appendChild(el('span', 'nm', cat.name));
-    head.appendChild(el('span', 'ct', String(cat.cmds.length)));
+    head.appendChild(el('span', 'em', cat.emoji || EMOJI[cat.name] || '📁'));
+    head.appendChild(el('span', 'nm', catTitle(cat.name)));
+    head.appendChild(el('span', 'ct', String(catCount(cat))));
     head.appendChild(el('span', 'ar', '▼'));
 
     const body = el('div', 'cat-b');
@@ -250,7 +945,10 @@ function renderCategories(keepScroll) {
       filled = true;
       const f = document.createDocumentFragment();
       cat.cmds.forEach(n => f.appendChild(cmdNode(n)));
+      const rest = catCount(cat) - cat.cmds.length;
+      if (rest > 0) f.appendChild(el('div', 'more', '+' + rest + ' lainnya, ketik ' + P + 'menu ' + cat.name));
       body.appendChild(f);
+      $('#legend').classList.toggle('hide', !anyMark);
     };
 
     if (opened.has(i)) fill();
@@ -323,7 +1021,7 @@ function doSearch(raw) {
   const hits = [];
   for (const cat of cats) {
     for (const n of cat.cmds) {
-      if (n.toLowerCase().includes(q)) hits.push([n, cat.name]);
+      if (cmdName(n).toLowerCase().includes(q)) hits.push([n, catTitle(cat.name)]);
       if (hits.length >= 80) break;
     }
     if (hits.length >= 80) break;
